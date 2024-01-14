@@ -9,3 +9,10 @@ for host in nr.inventory.hosts:
 
 
 
+#comment
+# we already khonw that we need data fo config devices ( access with inventory)
+# for send config u must import send_config in nornir_scrapli.tasks 
+# def send_config(task: Task,config: str,dru_run:optional(bool))
+# dry_run just check that config run on devices and does not apply.
+
+
