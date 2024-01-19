@@ -1,0 +1,117 @@
+#exampel1
+
+import getpass
+from nornir import InitNornir
+from nornir_netmiko.tasks import netmiko_send_command
+from nornir_utils.plugins.functions import print_result
+
+nr = InitNornir(config_file="config.yaml")
+
+mypassword=getpass.getpass()
+nr.inventory.defaults.password=mypassword
+#nr.inventory.hosts["R1"].password=mypassword
+
+def netmiko_send_commands_example(task):
+    task.run(task=netmiko_send_command, command_string="show int des")
+
+results=nr.run(task=netmiko_send_commands_example)
+print_result(results)
+
+
+#until now ,  username & password were in clear-text in the inventory file .which we do not want for seurity reason.there are 4 method for this purpose(GETPASS,SYSARGV,GPG,PUBLIC KEY AUTHENTICATION)
+# in above example i used getpass , so first import getpass
+# this command : mypassword=getpass.getpass() ===== gets password from user,i have placed it , in a function named " mypassword" 
+
+
+
+
+
+
+
+#example2
+
+import getpass
+from nornir import InitNornir
+from nornir_netmiko.tasks import netmiko_send_command
+from nornir_utils.plugins.functions import print_result
+
+nr = InitNornir(config_file="config.yaml")
+
+default_password=getpass.getpass(prompt="Enter Default Password: ")
+cisco_group_password=getpass.getpass(prompt="Enter Cisco Group Password: ")
+juniper_group_password=getpass.getpass(prompt="Enter Juniper Group Password: ")
+R1_password=getpass.getpass(prompt="Enter Router R1 Password: ")
+
+nr.inventory.defaults.password=default_password
+nr.inventory.groups["cisco"].password=cisco_group_password
+nr.inventory.groups["juniper"].password=juniper_group_password
+nr.inventory.hosts["R1"].password=R1_password
+
+def netmiko_send_commands_example(task):
+    task.run(task=netmiko_send_command, command_string="show int des")
+
+results=nr.run(task=netmiko_send_commands_example)
+print_result(results)
+
+
+
+# may ،Different devices have different passwords, for which I define some variables
+# according to the example above : i define prompt.
+
+
+
+
+
+
+
+
+#example3
+
+import sys
+from nornir import InitNornir
+from nornir_netmiko.tasks import netmiko_send_command
+from nornir_utils.plugins.functions import print_result
+
+nr = InitNornir(config_file="config.yaml")
+
+nr.inventory.hosts["R1"].username=sys.argv[1]
+nr.inventory.hosts["R1"].password=sys.argv[2]
+
+def netmiko_send_commands_example(task):
+    task.run(task=netmiko_send_command, command_string="show ip int brief | exc unass")
+
+results=nr.run(task=netmiko_send_commands_example)
+print_result(results)
+
+
+# when u run script , at the same time , u can inter password.
+# for this purpose, import sys , just pay attention , sys.argv[], arg[0] the name of the script, username argv[1], pass argv[2] ,for example when run python 3 u type : python3 get.pass admin admin123(get.pass =argv[0],admin = argv[1] . admin123 = argv[2])
+
+
+
+
+#example4
+
+import os
+from nornir import InitNornir
+from nornir_netmiko.tasks import netmiko_send_command
+from nornir_utils.plugins.functions import print_result
+
+nr = InitNornir(config_file="config.yaml")
+
+nr.inventory.hosts["R1"].username=os.environ["username"]
+nr.inventory.hosts["R1"].password=os.environ["password"]
+
+def netmiko_send_commands_example(task):
+    task.run(task=netmiko_send_command, command_string="show ip int brief | exc unass")
+
+results=nr.run(task=netmiko_send_commands_example)
+print_result(results)
+
+
+
+
+#Put the credentials in a file, but encrypt it,then python decrypt it with the symetric method and read the decrypted file,for this perpose,u creat file include username and password, in this example i named that file = CREDENTIAL ,we will encrypt the content of this file with the key .whenever you need the content of this file , decrypt this file wit the key and read its contents.
+# for this purpose use gpg module in lunix.
+# hen import os 
+# environ username & password , but both of these in CREDENTIAL.gbg file, that python first read it , for this purpose before u run script, type : env $(gpg --decrypt CREDENTIAL.gpg) python3 script.py
