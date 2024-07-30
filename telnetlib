@@ -1,0 +1,60 @@
+#about telnetlib : this is module u can import from python : import telnetlib
+
+# this module has a class: Telnet:   telnetlib.Telnet(ip, port, timeout) 
+
+#Telnet Objects :1.read_until(for read output until expresion word),2.write(for inter username or type command)
+
+import telnetlib
+import time
+
+# Open telnet connection to devices, determine function that name is open_telnet_conn, ip in () is parameter.at the end u must calling open_telnet_conn whit argv.
+
+def open_telnet_conn(ip):
+    
+	#Define telnet parameters(in ordinary, when we want telnet to devices, we inter username and password, beside class Telnet in (telnetlib.Telnet) has 3 parameters:1ip,2port,3timeout)
+	# what is READ_TIMEOUT? in this example, after we enter username or password, we want 5ms,be wating.
+	# for more information, refer to telnetlib.py and open with notpad
+	username = 'shadi'
+	password = 'cisco'
+	TELNET_PORT = 23
+	TELNET_TIMEOUT = 5
+	READ_TIMEOUT = 5
+        
+	#Logging into device
+	connection = telnetlib.Telnet(ip, TELNET_PORT, TELNET_TIMEOUT)
+        
+	output = connection.read_until("Username:", READ_TIMEOUT)# .read_until is determine in telnetlib for read until expresion word.USE string.
+	connection.write(username + "\n")# .write is determine in telnetlib for write something that u determine in your code.
+        
+	output = connection.read_until("Password:", READ_TIMEOUT)
+	connection.write(password + "\n")
+	time.sleep(1)# for wating 1s
+        
+	#Setting terminal length for entire output - no pagination
+	connection.write("terminal length 0\n") #notice you must use string for command.
+	time.sleep(1)
+        
+	#Entering global config mode
+	connection.write("\n")
+	connection.write("configure terminal\n")#notice you must use string for command
+	time.sleep(1)
+	
+	connection.write("hostname NewR1\n")#notice you must use string for command
+	time.sleep(1)
+	
+	connection.write("tacacs-server host 1.2.3.4\n")#notice you must use string for command
+	time.sleep(1)
+	
+	connection.write("interface loop 0\n")#notice you must use string for command
+	time.sleep(1)
+	
+	connection.write("ip address 3.3.3.3 255.255.255.255\n")#notice you must use string for command
+	time.sleep(1)
+        
+  
+	#Closing the connection
+	connection.close()
+        
+		
+#Calling the Telnet function 
+open_telnet_conn('192.168.1.100')
