@@ -15,7 +15,7 @@ def open_telnet_conn(ip):
 	# what is READ_TIMEOUT? in this example, after we enter username or password, we want 5ms,be wating.
 	# for more information, refer to telnetlib.py and open with notpad
 	username = 'shadi'
-	password = 'cisco'
+	password = 'shadi'
 	TELNET_PORT = 23
 	TELNET_TIMEOUT = 5
 	READ_TIMEOUT = 5
