@@ -1,7 +1,6 @@
-#about telnetlib : this is module u can import from python : import telnetlib
-
+# this example, I define username shadi privilage 15 password shadi,line vty 0 4 (login local and transport inpiut all) in my router.
+#about telnetlib : this is module is bultin and  u can import from python : import telnetlib
 # this module has a class: Telnet:   telnetlib.Telnet(ip, port, timeout) 
-
 #Telnet Objects :1.read_until(for read output until expresion word),2.write(for inter username or type command)
 
 import telnetlib
@@ -39,7 +38,7 @@ def open_telnet_conn(ip):
 	connection.write("configure terminal\n")#notice you must use string for command
 	time.sleep(1)
 	
-	connection.write("hostname NewR1\n")#notice you must use string for command
+	connection.write("hostname shadi\n")#notice you must use string for command
 	time.sleep(1)
 	
 	connection.write("tacacs-server host 1.2.3.4\n")#notice you must use string for command
