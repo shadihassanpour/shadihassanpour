@@ -1,3 +1,4 @@
+# first you test telnet for router device, if your OS is Ubuntu, you can help this link : https://www.geeksforgeeks.org/how-to-install-and-use-telnet-on-ubuntu-22-04-lts/
 # this example, I define username shadi privilage 15 password shadi,line vty 0 4 (login local and transport inpiut all) in my router.
 #about telnetlib : this is module is bultin and  u can import from python : import telnetlib
 # this module has a class: Telnet:   telnetlib.Telnet(ip, port, timeout) 
