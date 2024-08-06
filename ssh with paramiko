@@ -1,0 +1,60 @@
+import time
+import paramiko
+from getpass import getpass
+import colorama
+from colorama import init
+init()
+from colorama import Fore,Back,Style
+
+
+
+
+#Open SSHv2 connection to devices
+def open_ssh_conn(ip):
+    #Change exception message
+    try:
+        
+		
+		
+        username = input("\nUsername: ")
+        password = getpass(prompt = 'Password: ')
+        enable = getpass(prompt = 'Enable Password: ')
+        
+        #Logging into device
+        session = paramiko.SSHClient()
+
+        session.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+                
+        session.connect(ip, username = username, password = password, look_for_keys=False, allow_agent=False)
+        print (Fore.CYAN + "SSH Connection Stablished" + Style.RESET_ALL)
+		
+        connection = session.invoke_shell()	
+        
+        #Setting terminal length for entire output - no pagination
+		
+        connection.send("enable\n")
+        time.sleep(1)
+        connection.send(enable +"\n")
+        time.sleep(1)
+        connection.send("terminal length 0\n")
+        time.sleep(1)
+        
+        
+        connection.send("\n")
+        connection.send("show ip inter brief\n")
+        time.sleep(1)
+
+
+        
+        #Checking command output for IOS syntax errors
+        output = connection.recv(65535)
+        print (output)
+
+        session.close()
+     
+    except paramiko.AuthenticationException:
+        print (Style.BRIGHT + Fore.RED + "Authentication Failed" + Style.RESET_ALL)
+		
+		
+#Calling the SSH function
+open_ssh_conn('192.168.109.11')
