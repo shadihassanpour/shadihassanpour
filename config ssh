@@ -1,0 +1,13 @@
+SSH-parameter can be configured at two places:
+
+    #globally at /etc/ssh_config
+    #per User at ~/.ssh/config
+    
+
+  Host 192.168.109.11
+    kexAlgorithms +diffie-hellman-group-exchange-sha1
+    KexAlgorithms +diffie-hellman-group14-sha1
+    KexAlgorithms +diffie-hellman-group1-sha1
+    HostKeyAlgorithms=+ssh-rsa
+    PubkeyAcceptedKeyTypes +ssh-rsa
+    Ciphers aes256-ctr,aes128-ctr,aes256-cbc,aes128-cbc,3des-cbc
