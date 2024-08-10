@@ -1,7 +1,10 @@
 import time
 import paramiko
-from getpass import getpass
-import colorama
+#getpass dont show output
+from getpass import getpass 
+#for use try in function, (try and except) helps dedicated authentication fail error in my code.
+import sys   
+import colorama # for error 
 from colorama import init
 init()
 from colorama import Fore,Back,Style
@@ -21,38 +24,39 @@ def open_ssh_conn(ip):
         enable = getpass(prompt = 'Enable Password: ')
         
         #Logging into device
+        # for more information check class SSHClient in lib with name: Client.py 
         session = paramiko.SSHClient()
 
+	#for more information check class set_missing_host_key_policy lib with name: Client.py
         session.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-                
+
+        #check clinet.py for class connect
         session.connect(ip, username = username, password = password, look_for_keys=False, allow_agent=False)
         print (Fore.CYAN + "SSH Connection Stablished" + Style.RESET_ALL)
-		
+
+	#check clinet.py for class invoke_shell()
         connection = session.invoke_shell()	
         
         #Setting terminal length for entire output - no pagination
+	#for more information about (send and recv)classes check agent.py in lib
 		
         connection.send("enable\n")
         time.sleep(1)
-        connection.send(enable +"\n")
-        time.sleep(1)
         connection.send("terminal length 0\n")
         time.sleep(1)
-        
-        
         connection.send("\n")
         connection.send("show ip inter brief\n")
         time.sleep(1)
-
-
-        
-        #Checking command output for IOS syntax errors
         output = connection.recv(65535)
         print (output)
 
         session.close()
-     
-    except paramiko.AuthenticationException:
+
+    #class AuthenticationException(SSHException):
+    ##Exception raised when authentication failed for some reason.  It may be
+    ##possible to retry with different credentials.  (Other classes specify more
+    ##specific reasons.) for mor information u can check ssh_exception.py in lib
+    except paramiko.AuthenticationException:      
         print (Style.BRIGHT + Fore.RED + "Authentication Failed" + Style.RESET_ALL)
 		
 		
