@@ -1,0 +1,40 @@
+you must create 4-yaml file. 1-host.yaml 2.groups.yaml 3.defaults.yaml 4.config.yaml
+create 4 file as follows:
+main part in hosts.yaml is hostname that is device ip address:
+1-hosts.yaml
+---
+R1:
+ hostname: "192.168.109.11"
+ username: "shadi"
+ password: "shadi"
+ groups:
+  -cisco
+  -firewall
+  -shiraz
+
+2-group.yaml
+---
+  cisco:
+   platform: ios
+
+3-defaults.yaml
+---
+username: "shadi"
+password: "shadi"
+platform: "ios"
+
+4-config.yaml
+---
+inventory:
+    plugin: SimpleInventory
+    options:
+        host_file: "hosts.yaml"  #the path file of the hosts.yaml
+        group_file: "groups.yaml" #the path file of the groups.yaml
+        default_file: "defaults.yaml" #the path file of the default.yaml
+runner:
+    plugin: threaded
+    options:
+        num_workers: 20
+ # priority for 3 files above:first->hosts.yaml    second->:group.yaml     third->:default.yaml
+        
+        
