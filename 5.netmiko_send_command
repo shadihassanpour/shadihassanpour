@@ -1,0 +1,9 @@
+from nornir_netmiko.tasks import netmiko_send_command
+from nornir_utils.plugins.functions import print_result
+
+nr = InitNornir(config_file="config.yaml")
+
+def netmikosend_command_example(task):
+    task.run(task=netmiko_send_command, command_string="show interfaces") 
+results=nr.run(task=netmikosend_command_example)
+print_result(results)
