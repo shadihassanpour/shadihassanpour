@@ -1,4 +1,5 @@
 #first u must ip scp enable in device#
+#for merge or replace first u must enter archive command#
 from dataclasses import replace
 from nornir import InitNornir
 from nornir_napalm.plugins.tasks import napalm_configure
