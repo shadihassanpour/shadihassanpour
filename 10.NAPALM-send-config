@@ -1,3 +1,4 @@
+#first u must ip scp enable in device#
 from dataclasses import replace
 from nornir import InitNornir
 from nornir_napalm.plugins.tasks import napalm_configure
